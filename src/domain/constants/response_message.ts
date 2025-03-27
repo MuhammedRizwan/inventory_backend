@@ -35,6 +35,12 @@ enum response_message {
     CUSTOMER_ADD_ERROR = "Couldn't add customer! ",
     CUSTOMER_EDIT_ERROR = "COuldn't edit customer!",
     CUSTOMER_DELETE_ERROR="Couldn't delete customer!",
+    PURCHASE_ADD_ERROR="Couldn't add purchase!",
+    PURCHASE_ADDED="Purchase added successfully!",
+    QUANTITY_UPDATE_ERROR="Couldn't update quantityt!",
+    FETCH_ALL_PURCHASE="Fetch all purchase successfully!",
+    FETCH_ALL_PURCHASE_ERROR="couldn't fetch all purchase!",
+    LOGOUT_SUCCESSFULL="user logout successfully!"
 };
 
 export default response_message

@@ -12,6 +12,12 @@ router.post("/login", (req:Request, res:Response, next:NextFunction) => {
 router.post("/signup", (req:Request, res:Response, next:NextFunction) => {
     return user.signup(req, res, next);
   });
+router.post("/logout", (req:Request, res:Response, next:NextFunction) => {
+    return user.logout(req, res, next);
+  });
+router.post("/refresh", (req:Request, res:Response, next:NextFunction) => {
+    return user.refresh_token(req, res, next);
+  });
 
 
 export default router;

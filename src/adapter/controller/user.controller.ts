@@ -23,8 +23,21 @@ export default class UserController implements IuserController {
                 return
             }
 
-            const user = await this._user_usecase.login(email, password);
+            const { user, accessToken, refreshToken } = await this._user_usecase.login(email, password);
 
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 15 * 60 * 1000, // 15 minutes
+            });
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+            });
             res
                 .status(status_code.OK)
                 .json(ApiResponse.successResponse(response_message.USER_LOGIN, user));
@@ -51,4 +64,34 @@ export default class UserController implements IuserController {
             next(error);
         }
     }
+    async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            res.clearCookie('accessToken');
+            res.clearCookie('refreshToken');
+            res.json(ApiResponse.successResponse(response_message.LOGOUT_SUCCESSFULL));
+        } catch (error) {
+            next(error)
+        }
+    }
+    async refresh_token(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            if (!refreshToken) {
+                res.json(ApiResponse.errorResponse(response_message.REFRESH_TOKEN_MISSING));
+            }
+            const accessToken = await this._user_usecase.refresh_token(refreshToken)
+
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 15 * 60 * 1000,
+            });
+
+            res.json(ApiResponse.successResponse(response_message.TOKEN_REFRESHED));
+        } catch (error) {
+            next(error)
+        }
+    }
 }
+
