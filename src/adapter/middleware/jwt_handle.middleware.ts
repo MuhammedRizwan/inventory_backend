@@ -30,7 +30,7 @@ export default function JwtMiddleware(req: Request, res: Response, next: NextFun
 
     if (!decoded) {
       res.status(status_code.FORBIDDEN).json(ApiResponse.errorResponse(response_message.INVALID_TOKEN, status_code.FORBIDDEN));
-
+      return
     }
 console.log(decoded)
     req.user = decoded;
