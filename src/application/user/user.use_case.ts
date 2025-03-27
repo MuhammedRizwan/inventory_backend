@@ -65,8 +65,10 @@ export default class UserUseCase implements IuserUsecase {
     }
     async refresh_token(token:string): Promise<string> {
         try {
-            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
+            const decoded = jwt.verify(token, process.env.REFRESH_SECRET as string);
+            console.log(decoded,"in the refresh")
             const accessToken = await this._token_service.generateAccessToken((decoded as {id:string}).id)
+            console.log(accessToken)
             return accessToken
         } catch (error) {
             throw error
