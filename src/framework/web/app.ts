@@ -4,10 +4,15 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import router from '../router/index';
 import dotenv from 'dotenv';
-import corsOptions from '../../config/cors.config';
 import errorHandler from '../../adapter/middleware/error_handle.middleware';
 
 dotenv.config();
+
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
+
 const createApp = (): Application => {
   const app = express();
 

@@ -6,7 +6,7 @@ import status_code from "../../domain/constants/status_code";
 import response_message from "../../domain/constants/response_message";
 import Ipassword_service from "../../domain/interface/service/password_service.interface";
 import { Itoken_Service } from "../../domain/interface/service/token_service.interface";
-import jwt from 'jsonwebtoken';
+
 
 
 export default class UserUseCase implements IuserUsecase {
@@ -63,16 +63,23 @@ export default class UserUseCase implements IuserUsecase {
         }
 
     }
-    async refresh_token(token: string): Promise<string> {
+    async refresh_token(refreshToken: string): Promise<string> {
         try {
-            const decoded = jwt.verify(token, process.env.REFRESH_SECRET as string);
-            if (!decoded) {
-                throw new AppError(status_code.BAD_REQUEST, response_message.REFRESH_TOKEN_MISSING)
+            if (!refreshToken) {
+                throw new AppError(status_code.BAD_REQUEST, response_message.REFRESH_TOKEN_MISSING);
             }
-            console.log(decoded, "in the refresh")
-            const accessToken = await this._token_service.generateAccessToken((decoded as { id: string }).id)
-            console.log(accessToken)
-            return accessToken
+
+            const payload = this._token_service.verifyRefreshToken(refreshToken);
+            if (!payload) {
+                throw new AppError(status_code.NOT_FOUND, response_message.TOKEN_EXPIRED)
+            }
+
+            const newAccessToken = this._token_service.generateAccessToken(payload.id);
+            if (!newAccessToken) {
+                throw new AppError(status_code.NOT_FOUND, response_message.ACCESS_TOKEN_MISSING)
+            }
+
+            return newAccessToken
         } catch (error) {
             throw error
         }
