@@ -35,7 +35,6 @@ export default class UserUseCase implements IuserUsecase {
             }
             const accessToken = await this._token_service.generateAccessToken(user._id as string)
             const refreshToken = await this._token_service.generateRefreshToken(user._id as string)
-            console.log(accessToken, "acesss", refreshToken)
             if (!accessToken || !refreshToken) {
                 throw new AppError(status_code.BAD_REQUEST, response_message.TOKEN_NOT_CREATED)
             }

@@ -29,7 +29,6 @@ export default class CustomerController  implements IcustomerController {
 
     async add_customer(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log(req.body,req.params)
             const { name, email, mobile, address } = req.body
             const {userId}=req.params
             if (!name || !email || !mobile || !address) {

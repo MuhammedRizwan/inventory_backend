@@ -41,7 +41,6 @@ export default class CustomerUsecase implements IcustomerUsecase {
 
     async editcustomer(customerId: string, customer: Partial<Icustomer>): Promise<Icustomer> {
         try {
-            console.log(customer)
             const updatedcustomer = await this._customerRepository.updatecustomer(customerId, customer);
             if (!updatedcustomer) {
                 throw new AppError(status_code.BAD_REQUEST, response_message.CUSTOMER_EDIT_ERROR)

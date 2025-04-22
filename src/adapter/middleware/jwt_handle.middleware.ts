@@ -10,29 +10,27 @@ import Token from '../../domain/constants/token_constants';
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user?:  string | jwt.JwtPayload;
     }
   }
 }
 
 export default function JwtMiddleware(req: Request, res: Response, next: NextFunction): void {
-  console.log(req.cookies)
   const token = req.cookies.accessToken;
-  
+
   if (!token) {
     res.status(status_code.UNAUTHORIZED).json(ApiResponse.errorResponse(response_message.ACCESS_TOKEN_MISSING, status_code.UNAUTHORIZED));
     return
   }
 
   try {
-    console.log(process.env.ACCESS_TOKEN_SECRET)
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
 
     if (!decoded) {
       res.status(status_code.FORBIDDEN).json(ApiResponse.errorResponse(response_message.INVALID_TOKEN, status_code.FORBIDDEN));
       return
     }
-console.log(decoded)
+    console.log(decoded)
     req.user = decoded;
     next();
   } catch (error) {

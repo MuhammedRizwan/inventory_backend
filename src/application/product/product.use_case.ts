@@ -41,7 +41,6 @@ export default class ProductUsecase implements IProductUseCase {
 
     async editProduct(productId: string, product: Partial<IProduct>): Promise<IProduct> {
         try {
-            console.log(product)
             const updatedProduct = await this._productRepository.updateProduct(productId, product);
             if (!updatedProduct) {
                 throw new AppError(status_code.BAD_REQUEST, response_message.PRODUCT_EDIT_ERROR)

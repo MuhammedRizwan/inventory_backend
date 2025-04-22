@@ -14,7 +14,6 @@ export default class PurchaseController implements IpurchaseController {
     async add_purchase(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const purchaseData = req.body
-            console.log(purchaseData,"data")
             const purchase = this._purchase_usecase.add_purchase(purchaseData)
             res.
                 status(status_code.OK).

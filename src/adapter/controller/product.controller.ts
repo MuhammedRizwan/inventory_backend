@@ -28,7 +28,6 @@ export default class ProductController  implements IproductController {
 
     async add_product(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            console.log(req.body,req.params)
             const { name, description, quantity, price } = req.body
             const {userId}=req.params
             if (!name || !description || !quantity || !price) {

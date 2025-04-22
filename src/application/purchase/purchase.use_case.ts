@@ -34,7 +34,6 @@ export default class PurchaseUsecase implements IpurchaseUsecase{
     async fetch_purchase(userId:string): Promise<IPurchase[]> {
         try {
             const purchases=await this._purchaseRepository.fetch_all_purchase(userId)
-            console.log(purchases)
             if(!purchases){
                 throw new AppError(status_code.BAD_REQUEST,response_message.FETCH_ALL_PURCHASE_ERROR)
             }
