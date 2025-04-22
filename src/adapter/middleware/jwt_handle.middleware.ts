@@ -10,7 +10,7 @@ import Token from '../../domain/constants/token_constants';
 declare global {
   namespace Express {
     interface Request {
-      user?:  string | jwt.JwtPayload;
+      user?:  any;
     }
   }
 }
