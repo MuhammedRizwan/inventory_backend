@@ -10,11 +10,11 @@ export default class TokenService {
     return jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: '7d' });
   }
 
-  verifyAccessToken(token: string):string|JwtPayload {
+  verifyAccessToken(token: string) {
     return jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
   }
 
-  verifyRefreshToken(token: string):string|JwtPayload {
+  verifyRefreshToken(token: string) {
     return jwt.verify(token,process.env.REFRESH_TOKEN_SECRET as string);
   }
 }
